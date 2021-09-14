@@ -1,0 +1,12 @@
+.board {
+    position: absolute;
+    width: 60vw;
+    height: 50vw;
+    left: calc(50% - 30vw);
+    top: 50px;
+    font-size: 0;
+}
+
+.column{
+    float: left;
+}
