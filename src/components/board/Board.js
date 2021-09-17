@@ -3,7 +3,7 @@ import './board.css'
 import Tile from "../tile/Tile";
 import {connect} from "../../configuration/RsocketClient";
 import {COLUMN_LENGTH, createBoard, NODES_LENGTH} from "../../service/board-creator";
-
+import {NodeMode} from "../../domain/node";
 
 const Board = () => {
     const [board, setBoard] = useState([])
@@ -38,12 +38,17 @@ const Board = () => {
     const handleOnNext = (res) => {
         const data = res.data;
         board[data.col][data.row].isVisited = data.isVisited;
-        if (board[data.col][data.row].isFinish) {
+        if (NodeMode.FINISH === board[data.col][data.row].mode) {
+            console.log(data.path);
             data.path.forEach(node => {
-                board[node.col][node.row].isPath = node.isPath;
-                setBoard([...board]);
+                board[node.col][node.row].mode =
+                    NodeMode.START === board[node.col][node.row].mode
+                        ?
+                        NodeMode.START
+                        :
+                        NodeMode.PATH;
+
             })
-            return;
         }
         // we need to add new reference to force react to rerender element
         setBoard([...board]);
@@ -72,8 +77,15 @@ const Board = () => {
         setClicked(!clicked)
     }
     const hoverHandle = (node) => {
-        if (clicked && !board[node.col][node.row].isFinish) {
-            board[node.col][node.row].isWall = !board[node.col][node.row].isWall;
+        function shouldMakeWall() {
+            return clicked
+                && !board[node.col][node.row].isVisited
+                && (NodeMode.GROUND === board[node.col][node.row].mode
+                    || NodeMode.WALL === board[node.col][node.row].mode);
+        }
+
+        if (shouldMakeWall()) {
+            board[node.col][node.row].mode = board[node.col][node.row].mode === NodeMode.WALL ? NodeMode.GROUND : NodeMode.WALL
             // we need to add new reference to force react to rerender element
             setBoard([...board])
         }

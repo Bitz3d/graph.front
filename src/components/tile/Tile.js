@@ -1,20 +1,30 @@
+import {NodeMode} from "../../domain/node";
+
 const Tile = ({node, click, hover}) => {
 
-    const backgroundColorSetter = (node) => {
-        if (node.isVisited && node.isStart) return "red";
-        if (node.isVisited && node.isFinish) return "black";
-        if (node.isPath) return "yellow";
-        if (node.isVisited) return "lime";
-        if (node.isStart) return "red";
-        if (node.isFinish) return "black";
-        if (node.isWall) return "gray";
-        return "white";
+    function getBackground() {
+
+        // eslint-disable-next-line default-case
+        switch (node.mode) {
+            case NodeMode.START:
+                return "red";
+            case NodeMode.FINISH:
+                return "black"
+            case NodeMode.WALL:
+                return "gray"
+            case NodeMode.PATH:
+                return "yellow"
+            case NodeMode.GROUND:
+                return node.isVisited ? "lime" : "white";
+
+
+        }
     }
 
     const nodeStyle = {
         "borderStyle": "solid",
         "borderWidth": 1,
-        "background": backgroundColorSetter(node),
+        "background": getBackground(),
         "height": 25,
         "width": 25,
     };
