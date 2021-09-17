@@ -2,7 +2,7 @@ import {useEffect, useRef} from "react";
 import './playgreaund.css'
 
 let recX = 100;
-
+let recY = 75;
 const Playground = () => {
     const canvasRef = useRef(null);
 
@@ -13,7 +13,7 @@ const Playground = () => {
 
             ctx.clearRect(0, 0, canvas.width, canvas.height)
             ctx.beginPath();
-            ctx.arc(recX, 75, 50, 0, 22 * Math.PI);
+            ctx.arc(recX, recY, 50, 0, 22 * Math.PI);
             ctx.stroke()
 
             ctx.beginPath();
@@ -22,19 +22,26 @@ const Playground = () => {
 
 
             ctx.beginPath();
-            ctx.moveTo(recX, 75);
+            ctx.moveTo(recX, recY);
             ctx.lineTo(400, 75);
             ctx.stroke();
-            recX++;
+
+            function transform() {
+                recX++;
+                recY++;
+            }
+
+            transform();
             requestAnimationFrame(render)
         }
 
-        // render();
+        render();
 
     }, [])
 
     function moveRec() {
         recX += 10;
+        recY += 10;
     }
 
     return (

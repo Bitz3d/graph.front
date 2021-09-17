@@ -57,7 +57,7 @@ const Board = () => {
 
     const newRequest = (socket, algVersion) => {
         const graph = {
-            graph: board,
+            grade: board,
             root: root
         }
 
