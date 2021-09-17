@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import './board.css'
-import Tile from "../tile/Tile";
+import Tile from "../tile/tile";
 import {connect} from "../../configuration/RsocketClient";
 import {COLUMN_LENGTH, createBoard, NODES_LENGTH} from "../../service/board-creator";
 import {NodeMode} from "../../domain/node";
