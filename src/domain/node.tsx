@@ -1,5 +1,7 @@
 // @ts-ignore
 
+import {Coordinate} from "./point/coordinate";
+
 export enum NodeMode {
     START,
     FINISH,
@@ -11,17 +13,15 @@ export enum NodeMode {
 
 export class Node {
 
-    col: number;
-    row: number;
+    position: Coordinate;
     distance: number;
     mode: NodeMode;
     isVisited: boolean;
     path: [];
 
 
-    constructor(col: number, row: number) {
-        this.col = col;
-        this.row = row;
+    constructor(position: Coordinate) {
+        this.position = position
         this.distance = 0;
         this.mode = NodeMode.GROUND
         this.isVisited = false;
@@ -42,8 +42,6 @@ export class Node {
                 return "yellow"
             case NodeMode.GROUND:
                 return this.isVisited ? "lime" : "white";
-
-
         }
     }
 }

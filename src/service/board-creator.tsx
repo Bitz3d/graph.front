@@ -1,12 +1,9 @@
 import '../domain/node'
 import {Node, NodeMode} from "../domain/node";
+import {Coordinate} from "../domain/point/coordinate";
 
 export const COLUMN_LENGTH: number = 30;
 export const NODES_LENGTH: number = 20;
-
-const createNode = (col: number, row: number): Node => {
-    return new Node(col, row);
-};
 
 const createRandomStartPlace = (tempBoard: Node[][], columnLength: number, nodesLength: number) => {
     const ranColumn: number = Math.floor(Math.random() * columnLength);
@@ -32,7 +29,7 @@ export const createBoard = () => {
 
     for (let i = 0; i < createdBoard.length; i++) {
         for (let j = 0; j < NODES_LENGTH; j++) {
-            createdBoard[i].push(createNode(i, j));
+            createdBoard[i].push(new Node(new Coordinate(i, j, 0)));
         }
     }
 

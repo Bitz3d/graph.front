@@ -37,12 +37,13 @@ const Board = () => {
 
     const handleOnNext = (res) => {
         const data = res.data;
-        board[data.col][data.row].isVisited = data.isVisited;
-        if (NodeMode.FINISH === board[data.col][data.row].mode) {
+        board[data.position.x][data.position.y].isVisited = data.isVisited;
+        if (NodeMode.FINISH === board[data.position.x][data.position.y].mode) {
             console.log(data.path);
             data.path.forEach(node => {
-                board[node.col][node.row].mode =
-                    NodeMode.START === board[node.col][node.row].mode
+                console.log(node);
+                board[node.position.x][node.position.y].mode =
+                    NodeMode.START === board[node.position.x][node.position.y].mode
                         ?
                         NodeMode.START
                         :
@@ -79,13 +80,13 @@ const Board = () => {
     const hoverHandle = (node) => {
         function shouldMakeWall() {
             return clicked
-                && !board[node.col][node.row].isVisited
-                && (NodeMode.GROUND === board[node.col][node.row].mode
-                    || NodeMode.WALL === board[node.col][node.row].mode);
+                && !board[node.position.x][node.position.y].isVisited
+                && (NodeMode.GROUND === board[node.position.x][node.position.y].mode
+                    || NodeMode.WALL === board[node.position.x][node.position.y].mode);
         }
 
         if (shouldMakeWall()) {
-            board[node.col][node.row].mode = board[node.col][node.row].mode === NodeMode.WALL ? NodeMode.GROUND : NodeMode.WALL
+            board[node.position.x][node.position.y].mode = board[node.position.x][node.position.y].mode === NodeMode.WALL ? NodeMode.GROUND : NodeMode.WALL
             // we need to add new reference to force react to rerender element
             setBoard([...board])
         }

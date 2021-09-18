@@ -10,6 +10,8 @@ let recY = 75;
 let acceleration = 10;
 let radius = 50;
 let animationFrame;
+
+
 const Playground = () => {
     const canvasRef = useRef(null);
     const movingCircle = new Circle(
@@ -25,32 +27,21 @@ const Playground = () => {
         radius,
         "red")
 
+    const line = new Line(
+        new Coordinate(movingCircle.position.x, movingCircle.position.y, 0),
+        new Coordinate(staticCircle.position.x, staticCircle.position.y, 0))
+
     useEffect(() => {
         const render = () => {
             const canvas = canvasRef.current;
             const ctx = canvas.getContext('2d');
-
             ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-
             movingCircle.update(ctx);
-
-
             staticCircle.update(ctx);
-
-            const line = new Line(
-                new Coordinate(movingCircle.position.x, movingCircle.position.y, 0),
-                new Coordinate(staticCircle.position.x, staticCircle.position.y, 0),
-                ctx)
-            line.draw();
-
-
+            line.update(movingCircle.position, staticCircle.position, ctx);
             animationFrame = requestAnimationFrame(render);
         }
-
         render();
-
-
         window.addEventListener('resize', () => {
             const canvas = canvasRef.current;
             canvas.width = window.innerWidth;
@@ -62,17 +53,10 @@ const Playground = () => {
             })
             window.cancelAnimationFrame(animationFrame)
         }
-
-
     }, [])
 
-    function moveRec() {
-        recX += acceleration;
-    }
-
     return (
-        <canvas className="canvas" ref={canvasRef} width={window.innerWidth}
-                height={window.innerHeight} onMouseDown={moveRec}></canvas>
+        <canvas className="canvas" ref={canvasRef} width={window.innerWidth} height={window.innerHeight}/>
     )
 }
 
