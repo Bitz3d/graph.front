@@ -39,7 +39,6 @@ const Board = () => {
         const data = res.data;
         board[data.position.x][data.position.y].isVisited = data.isVisited;
         if (NodeMode.FINISH === board[data.position.x][data.position.y].mode) {
-            console.log(data.path);
             data.path.forEach(node => {
                 console.log(node);
                 board[node.position.x][node.position.y].mode =

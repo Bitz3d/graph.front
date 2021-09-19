@@ -20,14 +20,12 @@ export class Circle {
 
 
     draw = (ctx: any) => {
-        console.log('draw')
         ctx.beginPath();
         ctx.arc(this.position.x, this.position.y, this.radius, 0, 22 * Math.PI);
         ctx.stroke()
     }
 
     update = (ctx: any) => {
-        console.log('update')
         if (this.position.x + this.radius > window.innerWidth || this.position.x - this.radius < 0) {
             this.acceleration.increaseX = -this.acceleration.increaseX;
         }
