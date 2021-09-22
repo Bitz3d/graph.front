@@ -1,5 +1,7 @@
 import {Coordinate} from "../point/coordinate";
 import {Acceleration} from "../acceleration/acceleration";
+import {MousePosition} from "../mouse-position/mouse-position";
+import {Line} from "../line/line";
 
 export class Circle {
 
@@ -7,21 +9,48 @@ export class Circle {
     acceleration: Acceleration;
     radius: number;
     color: string;
+    neighbors: Circle[]
 
     constructor(position: Coordinate,
                 acceleration: Acceleration,
                 radius: number,
                 color: string) {
-        this.position = position
+        this.position = position;
         this.acceleration = acceleration;
-        this.radius = radius
-        this.color = color
+        this.radius = radius;
+        this.color = color;
+        this.neighbors = [];
     }
 
+    addNeighbor = (neighbor: Circle) => {
+        this.neighbors.push(neighbor);
+    }
+
+    connectNeighbor = (ctx: any) => {
+        this.neighbors.forEach(n => {
+            const line = new Line(
+                new Coordinate(n.position.x, n.position.y, n.position.y),
+                new Coordinate(this.position.x, this.position.y, this.position.z));
+            line.draw(ctx);
+        })
+    }
+
+    _circleClicked = (mousePosition: MousePosition) => {
+        const distance =
+            Math.sqrt(
+                ((mousePosition.position.x - this.position.x) * (mousePosition.position.x - this.position.x))
+                +
+                ((mousePosition.position.y - this.position.y) * (mousePosition.position.y - this.position.y))
+            );
+        return distance < this.radius;
+
+    }
 
     draw = (ctx: any) => {
         ctx.beginPath();
         ctx.arc(this.position.x, this.position.y, this.radius, 0, 22 * Math.PI);
+        ctx.fillStyle = this.color;
+        ctx.fill();
         ctx.stroke()
     }
 
