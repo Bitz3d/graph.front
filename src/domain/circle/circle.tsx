@@ -26,13 +26,6 @@ export class Circle {
         this.neighbors.push(neighbor);
     }
 
-
-    getCircle = (mousePosition: MousePosition) => {
-        if (this._circleClicked(mousePosition)) {
-            return this;
-        }
-    }
-
     connectNeighbor = (ctx: any) => {
         this.neighbors.forEach(n => {
             const line = new Line(

@@ -1,40 +1,19 @@
 import {useEffect, useRef, useState} from "react";
 import './playgreaund.css'
 import {Circle} from "../../domain/circle/circle";
-import {Line} from "../../domain/line/line";
 import {Coordinate} from "../../domain/point/coordinate";
 import {Acceleration} from "../../domain/acceleration/acceleration";
 import {MousePosition} from "../../domain/mouse-position/mouse-position";
 
-let recX = 100;
-let recY = 75;
-let acceleration = 10;
-let radius = 30;
 let animationFrame;
 let graph = [];
 const Playground = () => {
-
-    const movingCircle = new Circle(
-        new Coordinate(recX, recY, 0),
-        new Acceleration(15, acceleration, 0),
-        radius,
-        "red"
-    )
-
     const canvasRef = useRef(null);
     const [connect, setConnect] = useState(false);
     const [focusedCircle, setFocusedCircle] = useState(null);
     const [selectCircle, setSelectCircle] = useState(false);
+    const [radius, setRadius] = useState(30);
 
-    const staticCircle = new Circle(
-        new Coordinate(400, 75, 0),
-        new Acceleration(acceleration, 15, 0),
-        radius,
-        "red")
-
-    const line = new Line(
-        new Coordinate(movingCircle.position.x, movingCircle.position.y, 0),
-        new Coordinate(staticCircle.position.x, staticCircle.position.y, 0))
 
     useEffect(() => {
         const render = () => {
