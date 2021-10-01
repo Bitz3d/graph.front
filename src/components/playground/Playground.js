@@ -4,12 +4,13 @@ import {Circle} from "../../domain/circle/circle";
 import {Coordinate} from "../../domain/point/coordinate";
 import {Acceleration} from "../../domain/acceleration/acceleration";
 import {MousePosition} from "../../domain/mouse-position/mouse-position";
+import {connect} from "../../configuration/RsocketClient";
 
 let animationFrame;
 let graph = [];
 const Playground = () => {
     const canvasRef = useRef(null);
-    const [connect, setConnect] = useState(false);
+    const [attach, setAttach] = useState(false);
     const [focusedCircle, setFocusedCircle] = useState(null);
     const [selectCircle, setSelectCircle] = useState(false);
     const [radius, setRadius] = useState(30);
@@ -68,7 +69,7 @@ const Playground = () => {
             setFocusedCircle(found);
         }
 
-        if (found && connect && focusedCircle) {
+        if (found && attach && focusedCircle) {
             console.log(focusedCircle);
             console.log('connect')
             console.log(found);
@@ -81,8 +82,8 @@ const Playground = () => {
     }
 
     const handleConnect = () => {
-        setConnect(!connect);
-        console.log(connect);
+        setAttach(!attach);
+        console.log(attach);
     }
 
     const handleCircleSelection = () => {
@@ -92,7 +93,25 @@ const Playground = () => {
 
     function handleReset() {
         setSelectCircle(false);
-        setConnect(false);
+        setAttach(false);
+    }
+
+    function newRequest(socket, algVersion) {
+        socket.requestResponse({
+            data: null,
+            metadata: String.fromCharCode(algVersion.length) + algVersion
+        }).subscribe({
+            onComplete: (gg) => console.log(gg.data['res']),
+            onError: (err) => console.log(err),
+            onNext: (res) => {
+                console.log("sdsdsd")
+                console.log(res)
+            }
+        })
+    }
+
+    const handleTopSort = () => {
+        connect().then(socket => newRequest(socket, 'top'));
     }
 
     return (
@@ -101,6 +120,7 @@ const Playground = () => {
                 <button onClick={handleConnect}>connect</button>
                 <button onClick={handleCircleSelection}>select circle</button>
                 <button onClick={handleReset}>reset</button>
+                <button onClick={handleTopSort}>Top Sort</button>
             </div>
             <canvas className="canvas" onClick={handleOnClick} ref={canvasRef} width={window.innerWidth}
                     height={window.innerHeight}/>
